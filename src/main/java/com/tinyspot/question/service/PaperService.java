@@ -1,6 +1,7 @@
 package com.tinyspot.question.service;
 
 import com.tinyspot.question.entity.Paper;
+import com.tinyspot.question.entity.PaperDidListItem;
 import com.tinyspot.question.entity.PaperListItem;
 import com.tinyspot.question.entity.Question;
 
@@ -19,4 +20,6 @@ public interface PaperService {
     List<PaperListItem> getUsersPaperList(Integer userId);
 
     PaperListItem getPaper(Integer paperId);
+
+    List<PaperDidListItem> getUsersDidPaperList(Integer userId);
 }

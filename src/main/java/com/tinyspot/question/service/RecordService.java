@@ -1,6 +1,7 @@
 package com.tinyspot.question.service;
 
 import com.tinyspot.question.entity.Answers;
+import com.tinyspot.question.entity.PublishListItem;
 import com.tinyspot.question.entity.Records;
 
 import java.util.List;
@@ -13,4 +14,6 @@ import java.util.List;
 public interface RecordService {
 
     int createNewRecord(Records records, List<Answers> answers);
+
+    List<PublishListItem> getUsersPublishDolist(Integer paperId);
 }

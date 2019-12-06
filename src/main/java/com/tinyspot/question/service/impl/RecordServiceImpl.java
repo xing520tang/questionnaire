@@ -1,6 +1,7 @@
 package com.tinyspot.question.service.impl;
 
 import com.tinyspot.question.entity.Answers;
+import com.tinyspot.question.entity.PublishListItem;
 import com.tinyspot.question.entity.Question;
 import com.tinyspot.question.entity.Records;
 import com.tinyspot.question.mapper.RecordMapper;
@@ -60,5 +61,16 @@ public class RecordServiceImpl implements RecordService {
         }
 
         return record.getId();
+    }
+
+    @Override
+    public List<PublishListItem> getUsersPublishDolist(Integer paperId) {
+        List<PublishListItem> answerInfos = null;
+        try {
+            answerInfos = recordMapper.getRecordsByPaperId(paperId);
+        } catch (Exception e) {
+            LOG.error("获取问卷作答信息异常", e);
+        }
+        return answerInfos;
     }
 }

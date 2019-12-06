@@ -10,9 +10,10 @@ import java.util.Date;
  */
 @Data
 public class PublishListItem {
-    private Integer id;         //答题编号
+    private Integer id;         //答题记录编号
     private Integer authorId;   //答题者id
     private String nickName;    //答题者昵称
+    private String imgName;     //答题者头像名称
     private Integer scores;     //问卷得分
 
     private Integer type;       //问卷类型

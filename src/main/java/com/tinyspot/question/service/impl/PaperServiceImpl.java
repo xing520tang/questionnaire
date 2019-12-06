@@ -2,6 +2,7 @@ package com.tinyspot.question.service.impl;
 
 import cn.hutool.core.util.ObjectUtil;
 import com.tinyspot.question.entity.Paper;
+import com.tinyspot.question.entity.PaperDidListItem;
 import com.tinyspot.question.entity.PaperListItem;
 import com.tinyspot.question.entity.Question;
 import com.tinyspot.question.mapper.PaperMapper;
@@ -95,5 +96,18 @@ public class PaperServiceImpl implements PaperService {
     public PaperListItem getPaper(Integer paperId) {
         PaperListItem paperListItem = paperMapper.getPaperAndAuthorIdAndNickByPaperId(paperId);
         return paperListItem;
+    }
+
+    @Override
+    public List<PaperDidListItem> getUsersDidPaperList(Integer userId) {
+        if (ObjectUtil.isEmpty(userId)) //未登录
+            return null;
+        List<PaperDidListItem> list = null;
+        try {
+            list = paperMapper.selectAllUserDidPapers(userId);
+        } catch (Exception e) {
+            LOG.error("查询用户参与的问卷异常", e);
+        }
+        return list;
     }
 }

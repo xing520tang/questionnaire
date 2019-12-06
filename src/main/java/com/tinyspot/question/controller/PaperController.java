@@ -135,10 +135,17 @@ public class PaperController {
         return res;
     }
 
+    /**
+     * 获取用户发布的问卷的答卷信息
+     * @param pageSize
+     * @param offset
+     * @param paperId 问卷id唯一映射到一个用户，所以不需要用户id
+     * @return
+     */
     @GetMapping("/user/publishDolist/{paperId}")
     public Map<String, Object> getUsersPublishDolist(@RequestParam(value = "limit", defaultValue = "10") Integer pageSize
             , @RequestParam(value = "offset", defaultValue = "0") Integer offset
-            , @PathVariable("paperId") Integer paperId, HttpSession session){
+            , @PathVariable("paperId") Integer paperId){
         LOG.debug("/paper/user/publishDolist/paperid...GET");
         int pageNum = offset/pageSize + 1; //第几页
         LOG.debug("第" + pageNum + "页, 每页"+pageSize);
@@ -236,7 +243,12 @@ public class PaperController {
     }
 
 
-
+    /**
+     * 根据问卷id和记录id查看问卷答题信息
+     * @param paperId
+     * @param recordId
+     * @return
+     */
     @GetMapping("/watch/{paperId}/{recordId}")
     public Map<String, Object> getRecordDetail(@PathVariable(value = "paperId") Integer paperId
                                                 , @PathVariable(value="recordId") Integer recordId){
@@ -260,6 +272,29 @@ public class PaperController {
         res.put("paperInfo", paper);
         res.put("questions", questions);
         res.put("answers", answers);
+        return res;
+    }
+
+
+    @GetMapping("/user/doList")
+    public Map<String, Object> getUsersDidPaper(@RequestParam(value = "limit", defaultValue = "10") Integer pageSize
+            , @RequestParam(value = "offset", defaultValue = "0") Integer offset
+            , HttpSession session){
+        LOG.debug("/paper/user/doList...GET");
+        int pageNum = offset/pageSize + 1; //第几页
+        LOG.debug("第" + pageNum + "页, 每页"+pageSize);
+
+        //开启分页，从pn也开始，一页10个数据
+        PageHelper.startPage(pageNum, pageSize);
+        //pagehelper后面紧跟的就是一个分页查询
+        List<PaperDidListItem> userDidPapers = paperService.getUsersDidPaperList((Integer) session.getAttribute("userId"));
+        //LOG.debug(allPapers.toString());
+
+        //生成结果集
+        Map<String, Object> res = new HashMap<>();
+        res.put("rows", userDidPapers);
+        res.put("total", userDidPapers.size());
+
         return res;
     }
 }

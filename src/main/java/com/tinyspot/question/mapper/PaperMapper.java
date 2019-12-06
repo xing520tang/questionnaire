@@ -1,6 +1,7 @@
 package com.tinyspot.question.mapper;
 
 import com.tinyspot.question.entity.Paper;
+import com.tinyspot.question.entity.PaperDidListItem;
 import com.tinyspot.question.entity.PaperListItem;
 import org.apache.ibatis.annotations.*;
 
@@ -37,7 +38,7 @@ public interface PaperMapper {
     /*
     查询所有的问卷，生成列表，列表元素封装成PaperListItem
      */
-    @Select("select p.id, p.description, u.id authorId, nick_name, type, title, sub_title, add_date, start_date, end_date, time_limit " +
+    @Select("select p.id, p.description, u.id authorId, u.img_name imgName, nick_name, type, title, sub_title, add_date, start_date, end_date, time_limit " +
             " FROM papers p JOIN users u ON p.author_id=u.id")
     List<PaperListItem> selectAllPapersAndAuthorNick();
 
@@ -54,4 +55,14 @@ public interface PaperMapper {
     @Select("select p.id, p.description, u.id authorId, nick_name, type, title, sub_title, add_date, start_date, end_date, time_limit " +
             " FROM papers p JOIN users u ON p.author_id=u.id where p.id=#{paperId}")
     PaperListItem getPaperAndAuthorIdAndNickByPaperId(@Param("paperId") Integer paperId);
+
+
+    /*
+    根据用户id查询用户的参与情况
+     */
+    @Select("SELECT p.id paperId, r.id recordId, u.id authorId, nick_name, TYPE, title, sub_title, add_date, start_date, end_date, u.`img_name` imgName, time_limit " +
+            "FROM records r LEFT JOIN users u ON r.`user_id`= u.`id` " +
+            "LEFT JOIN papers p ON r.`paper_id` = p.`id` " +
+            "WHERE u.id = #{userId}")
+    List<PaperDidListItem> selectAllUserDidPapers(@Param("userId") Integer userId);
 }

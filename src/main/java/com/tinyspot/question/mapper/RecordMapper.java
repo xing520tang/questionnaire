@@ -1,11 +1,9 @@
 package com.tinyspot.question.mapper;
 
 import com.tinyspot.question.entity.Answers;
+import com.tinyspot.question.entity.PublishListItem;
 import com.tinyspot.question.entity.Records;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -35,4 +33,10 @@ public interface RecordMapper {
             "</foreach>" +
             "</script>")
     void insertAnswersBatch(@Param("list") List<Answers> answers);
+
+
+    @Select("select r.id, user_id authorId, u.img_name imgName, nick_name, scores " +
+            "from records r join users u on r.user_id=u.id " +
+            "where r.paper_id=#{paperId}")
+    List<PublishListItem> getRecordsByPaperId(@Param("paperId") Integer paperId);
 }
