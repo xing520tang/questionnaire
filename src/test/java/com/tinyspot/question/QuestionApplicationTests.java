@@ -61,7 +61,7 @@ public class QuestionApplicationTests {
         sb.append(obj);
         System.out.println(sb + ".jpg");
     }
-*/
+
 
 //    @Test
 //    public void testJson(){
@@ -85,5 +85,5 @@ public class QuestionApplicationTests {
         System.out.println(answers);
 //        System.out.println(answers.size());
 //        System.out.println(answers.get(0).getPaperId());
-    }
+    }*/
 }
