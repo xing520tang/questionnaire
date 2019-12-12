@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/toastr/css/toastr.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>答题详情</title>
+</head>
+
+<body>
+<!--nav start-->
+<nav class="navbar  navbar-inverse navbar-static-top ">
+    <div class="container">
+        <div class="navbar-header">
+            <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                    aria-controls="bs-navbar" aria-expanded="false">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <a class="navbar-brand" href="/views/index.html"><i>Questionnaire investigation</i></a>
+        </div>
+        <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+
+            <ul class="nav navbar-nav">
+                <li><a href="/paper">我要发布</a></li>
+                <li><a href="/views/paper_list.html">问卷列表</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right" id="landr" style="display: none">
+                <li><a href="/views/register.html">注册</a></li>
+                <li><a href="/views/login.html">登录</a></li>
+            </ul>
+
+            <ul class="nav navbar-nav navbar-right" id="il" style="display: none">
+                <li style="display: none;" id="backManager"><a href="/#">后台管理</a></li>
+                <li>
+                    <div class="dropdown">
+
+                        <button class="btn btn-link " href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                aria-haspopup="true" aria-expanded="true">
+                            <img src="/static/img/akari.jpg" class="img-circle headimg" alt="xixixi~" style="width:35px;height: 35px">
+                            <span class="nick">nickname</span>
+                            <span class="caret"></span>
+                        </button>
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                            <li><a href="/views/member_info.html">个人中心</a></li>
+                            <li><a href="/views/member_publish.html">我的发布</a></li>
+                            <li><a href="/views/member_do.html">我的参与</a></li>
+                            <li role="separator" class="divider"></li>
+                            <li><a href="/logout">退出</a></li>
+                        </ul>
+                    </div>
+                </li>
+            </ul>
+
+        </nav>
+    </div>
+</nav>
+<!--nav end-->
+
+    <div class="container" id="headContainer">
+     <script id="headTmpl" type="text/x-jsrender">
+        <div class="panel panel-primary scores">
+            <div class="panel-body">
+                {{if type==1}}
+                    您的得分：{{:scores}}分
+                {{else}}
+                    答卷详情
+                {{/if}}
+            </div>
+        </div>
+     </script>
+    </div>
+
+
+    <div class="container" id="paperContainer">
+        <script id="paperTmpl" type="text/x-jsrender">
+            <h1 id="md-title" class="text-center">{{:title}}</h1>
+            <h6 id="md-subtitle" class="text-muted text-center">{{:subTitle}}</h6>
+            <h5 class="text-right">出题人：<img id="md-authorImg" src="/static/img/{{:authorId}}.jpg" class="img-circle"
+                    alt="{{:nickName}}" width="25px">
+                <label id="md-author">{{:nickName}}</label></h5>
+            <h6>
+                创建时间: <label id="md-addDate">{{:addDate}}</label>
+                开始时间: <label id="md-startDate">{{:startDate}}</label>
+                结束时间: <label id="md-endDate">{{:endDate}}</label>
+                问卷时长: <label id="md-timelimit">{{:timeLimit}}分钟</label>
+            </h6>
+            <blockquote>
+                <p id="md-description">{{:description}}</p>
+            </blockquote>
+            <img src="/static/img/paper.jpg" id="md-img" class="img-responsive" alt="Image">
+            <p>{{:remark}}</p>
+            <h5 class="page-header"></h5>
+        </script>
+    </div>
+
+
+
+    <div class="container" id="answerContainer">
+        <script id="answerTmpl" type="text/x-jsrender">
+            {{for}}
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <div class="panel-title">
+                        <div style="float: left;">
+                            {{if type==0}}
+                            <strong>单选</strong>
+                            {{else type==1}}
+                            <strong>多选</strong>
+                            {{else}}
+                            <strong>简答</strong>
+                            {{/if}}
+                        </div>
+                        <div style="clear: both;"></div>
+                    </div>
+                </div>
+                <div class="panel-body">
+                    <p><strong>{{:description}}</strong></p>
+                    <form class="answers">
+                        <input type="hidden" name="QuestionID" value={{:questionId}}>
+                        <div class="form-group">
+                            {{if type==0}}
+                            <div class="radio">
+                                {{for optionsInfo}}
+                                <p><label>
+                                        {{:#getIndex()}}. {{:#data}}
+                                    </label></p>
+                                {{/for}}
+                            </div>
+                            {{/if}}
+                            {{if type==1}}
+                            <div class="checkbox">
+                                {{for optionsInfo}}
+                                <p><label>
+                                    {{:#getIndex()}}. {{:#data}}
+                                </label></p>
+                                {{/for}}
+                            </div>
+                            {{/if}}
+                            {{if type==2}}
+                            {{/if}}
+                        </div>
+
+                    </form>
+                    <p>备注：{{:remark}}</p>
+                    <p><strong>答案：
+                        {{if type==0}}
+                            {{:answerNo}}
+                        {{else type==1}}
+                            {{:answerNo}}
+                        {{else}}
+                            {{:answerText}}
+                        {{/if}}
+                    </strong></p>
+                </div>
+            </div>
+            {{/for}}
+        </script>
+    </div>
+
+
+    <!--//{{template "footerJS" .}}-->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/vendor/toastr/js/toastr.min.js"></script>
+    <script src="/static/vendor/stickUp/js/stickUp.min.js"></script>
+    <script src="/static/vendor/jsrender/jsrender.min.js"></script>
+
+
+    <script src="/static/js/paper_watch.js"></script>
+
+</body>
+
+</html>

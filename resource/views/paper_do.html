@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/toastr/css/toastr.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>作 答</title>
+</head>
+
+<body>
+    <!--nav start-->
+    <nav class="navbar  navbar-inverse navbar-static-top ">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                        aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/views/index.html"><i>Questionnaire investigation</i></a>
+            </div>
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/paper">我要发布</a></li>
+                    <li><a href="/views/paper_list.html">问卷列表</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="landr" style="display: none;">
+                    <li><a href="/views/register.html">注册</a></li>
+                    <li><a href="/views/login.html">登录</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right" id="il" style="display: none;">
+                    <li style="display: none;" id="backManager"><a href="/#">后台管理</a></li>
+                    <li>
+                        <div class="dropdown">
+
+                            <button class="btn btn-link " href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="true">
+                                <img src="/static/img/akari.jpg" class="img-circle headimg" alt="xixixi~" style="width:35px;height: 35px">
+                                <span class="nick">nickname</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/views/member_info.html">个人中心</a></li>
+                                <li><a href="/views/member_publish.html">我的发布</a></li>
+                                <li><a href="/views/member_do.html">我的参与</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">退出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </nav>
+    <!--nav end-->
+    <DIV id=time_conter
+        style="background:rgb(183,17,41);  WIDTH: 100%;  color:#fff;FONT-FAMILY: arial; TEXT-ALIGN: center;">
+
+        <DIV id="timejs" style="FONT-SIZE: 1.8em">
+            <SPAN style="font-size:.8em;line-height:2em;">距交卷还有：</SPAN>
+            <!-- <SPAN id="day" class="day time_td">00</SPAN>天 -->
+            <SPAN id="hour" class="hour time_td">06</SPAN>时
+            <SPAN id="mini" class="time_td mini ml5">06</SPAN>分
+            <SPAN id="sec" class="sec time_td">06</SPAN>秒
+            <!--<SPAN id="hm" class="hm time_td">000</SPAN>-->
+        </DIV>
+    </DIV>
+
+    <div class="container">
+        <h1 id="md-title" class="text-center">{{.paper.Title}}</h1>
+        <h6 id="md-subtitle" class="text-muted text-center">{{.paper.Subtitle}}</h6>
+        <h5 class="text-right">出题人：<img id="md-authorImg" src="/static/img/akari.jpg" class="img-circle"
+                alt="{{.paper.AuthorID.NickName}}" width="25px">
+            <label id="md-author">用户昵称</label></h5>
+        <h6>
+            创建时间: <label id="md-addDate">2006-01-02 15:04:05</label>
+            开始时间: <label id="md-startDate">2006-01-02 15:04:05</label>
+            结束时间: <label id="md-endDate">2006-01-02 15:04:05</label>
+            问卷时长: <label id="md-timelimit">xx分钟</label>
+        </h6>
+        <blockquote>
+            <p id="md-description">问卷描述</p>
+        </blockquote>
+        <img src="/static/img/paper.jpg" id="md-img" class="img-responsive" alt="Image">
+        <!--<p>问卷备注</p>-->
+        <h5 class="page-header"></h5>
+    </div>
+
+
+    <!--<div>-->
+       <!--<em>Name:</em> {{:name}}-->
+       <!--{{if showNickname && nickname}}-->
+          <!--(Goes by <em>{{:nickname}}</em>)-->
+       <!--{{/if}}-->
+    <!--</div>-->
+
+
+
+    <div class="container" id="questionArea">
+        <script id="questionTmpl" type="text/x-jsrender">
+        {{for}}
+        <div class="panel panel-default">
+            <div class="panel-heading">
+                <div class="panel-title">
+                    <div style="float: left;">
+                        {{if type==0}}
+                            <strong>单选</strong>
+                        {{else type==1}}
+                             <strong>多选</strong>
+                        {{else}}
+                            <strong>简答</strong>
+                        {{/if}}
+
+                    </div>
+                    <div style="clear: both;"></div>
+                </div>
+            </div>
+            <div class="panel-body">
+                <p><strong>问： {{:description}}</strong></p>
+                <form class="answers">
+                    <input type="hidden" name="questionId" value={{:#getIndex()}}>
+                    <div class="form-group">
+                        {{if type==0}}
+                        <div class="radio">
+                            {{for optionsInfo}}
+                            <p><label><input type="radio" name="answerNo" value="{{:#getIndex()}}">
+                                    {{:#data}}
+                                </label></p>
+                            {{/for}}
+                        </div>
+                        {{/if}}
+
+                        {{if type==1}}
+                        <div class="checkbox">
+                            {{for optionsInfo}}
+                            <p><label><input type="checkbox" name="answerNo" value="{{:#getIndex()}}">
+                                    {{:#data}}
+                                </label></p>
+                            {{/for}}
+                        </div>
+                        {{/if}}
+
+                        {{if type==2}}
+                        <label>回答</label>
+                        <textarea class="form-control" name="answerText" rows="3"></textarea>
+                        {{/if}}
+                    </div>
+
+                </form>
+                <p>备注：{{:remark}}</p>
+            </div>
+        </div>
+        {{/for}}
+
+        </script>
+
+    </div>
+
+    <div class="modal fade" id="modal-submit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">确认提交</h4>
+                </div>
+                <div class="modal-body">
+                    此操作不可撤销！是否确定提交？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">我再想想</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">确认提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <p hidden id="paperId">paper.PaperID</p>
+    <p hidden id="userId">0</p>
+    <p hidden id="recordId">3</p>
+    <!--{{else}}-->
+    <!--<p hidden id="userID">1</p>-->
+
+
+    <!-- footer -->
+    <!-- jQuery -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/vendor/toastr/js/toastr.min.js"></script>
+    <script src="/static/vendor/stickUp/js/stickUp.min.js"></script>
+    <script src="/static/vendor/jsrender/jsrender.min.js"></script>
+
+
+    <script src="/static/js/paper_do.js"></script>
+</body>
+
+</html>

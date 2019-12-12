@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/toastr/css/toastr.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="/static/vendor/bootstrap-table/css/bootstrap-table.min.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>我的参与</title>
+</head>
+
+<body>
+
+    <!--nav start-->
+    <nav class="navbar  navbar-inverse navbar-static-top ">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                        aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/views/index.html"><i>Questionnaire investigation</i></a>
+            </div>
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/paper">我要发布</a></li>
+                    <li><a href="/views/paper_list.html">问卷列表</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right" id="il">
+                    <li style="display: none;" id="backManager"><a href="/#">后台管理</a></li>
+                    <li>
+                        <div class="dropdown">
+
+                            <button class="btn btn-link " href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="true">
+                                <img src="/static/img/akari.jpg" class="img-circle headimg" alt="xixixi~" style="width:35px;height: 35px">
+                                <span class="nick">nickname</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/views/member_info.html">个人中心</a></li>
+                                <li><a href="/views/member_publish.html">我的发布</a></li>
+                                <li><a href="/views/member_do.html">我的参与</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">退出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </nav>
+    <!--nav end-->
+
+    <div class="container">
+
+        <div class="container">
+            <ul class="nav nav-pills ">
+                <li role="presentation" ><a href="/views/member_info.html">我的信息</a></li>
+                <li role="presentation"><a href="/views/member_publish.html">我的发布</a></li>
+                <li role="presentation" class="active"><a href="#">我的参与</a></li>
+            </ul>
+        </div>
+        <table id="table"></table>
+
+
+    </div>
+
+    <div class="modal fade" id="info">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">试卷详情</h4>
+                </div>
+                <div class="modal-body">
+                    <h1 id="md-title" class="text-center">问卷列表</h1>
+                    <h6 id="md-subtitle" class="text-muted text-center">喵喵喵,喵呜喵咪咪～</h6>
+                    <h5 class="text-right">出题人：<img id="md-authorImg" src="#" class="img-circle" alt="喵喵喵~"
+                            width="25px"><label id="md-author">miammmm</label></h5>
+                    <h6>开始时间: <label id="md-startDate">2020-20-20</label>
+                        结束时间: <label id="md-endDate">2020-20-20</label>
+                        问卷时长: <label id="md-timelimit">100</label>
+                    </h6>
+                    <blockquote>
+                        <p id="md-description">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere
+                            erat a ante.</p>
+                    </blockquote>
+                    <img src="#" id="md-img" class="img-responsive" alt="Image">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">返回</button>
+                    <a type="button" class="btn btn-primary enterPaper">进入答题</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <!-- jQuery -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/vendor/toastr/js/toastr.min.js"></script>
+    <script src="/static/vendor/bootstrap-table/js/bootstrap-table.min.js"></script>
+    <script src="/static/vendor/bootstrap-table/js/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/static/vendor/bootstrap-table/js/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+    <script>
+
+        $.ajax({
+            url:"/user/auth",
+            type:"GET",
+            success:function(result){
+                //console.log(result);
+                if (result.code == 210) {
+                    //userName gaoshangqu
+                    $('.nick').text(result.data.nickName);
+
+                    //user headImg
+                    var src = $(".headimg")[0].src;
+                    src = src.substring(0, src.lastIndexOf("/")+1);
+                    $(".headimg").attr('src', src+result.data.imgName);
+
+                    //UserType
+                    if(result.data.userType != 1)
+                        $("#backManager").show();
+
+                    $("#landr").hide();
+                    $("#il").show();
+                } else {
+                    $("#il").hide();
+                    $("#landr").show();
+                }
+            },
+            error: function(result){
+                toastr.error("系统错误，请联系管理员！");
+            }
+        });
+
+
+        var $table = $('#table').bootstrapTable({
+            url: '/paper/user/doList',
+            method: 'GET',                      //请求方式（*）
+            striped: true,                      //是否显示行间隔色
+            cache: false,                       //是否使用缓存，默认为true，所以一般情况下需要设置一下这个属性（*）
+            pagination: true,                   //是否显示分页（*）
+            sortable: true,
+            sortName: "addDate",              //是否启用排序
+            sortOrder: "desc",                   //排序方式
+            sidePagination: "server",           //分页方式：client客户端分页，server服务端分页（*）
+            pageNumber: 1,                      //初始化加载第一页，默认第一页,并记录
+            pageSize: 10,                  //每页的记录行数（*）
+            pageList: [10, 25, 50, 100],        //可供选择的每页的行数（*）
+            search: true,                      //是否显示表格搜索
+            strictSearch: false,
+            showColumns: true,                  //是否显示所有的列（选择显示的列）
+            showRefresh: true,                  //是否显示刷新按钮
+            minimumCountColumns: 2,             //最少允许的列数
+            clickToSelect: true,                //是否启用点击选中行
+            // height: 500,                      //行高，如果没有设置height属性，表格自动根据记录条数觉得表格高度
+            uniqueId: "id",                     //每一行的唯一标识，一般为主键列
+            showToggle: true,                   //是否显示详细视图和列表视图的切换按钮
+            cardView: false,                    //是否显示详细视图
+            detailView: false,                  //是否显示父子表
+            mobileResponsive: true,
+            rowAttributes: "rowAttributes",
+            //得到查询的参数
+            columns: [{
+                field: 'recordId',
+                title: '编号',
+                sortable: true,
+                formatter: idformatter
+            },
+                {
+                    field: 'nickName',
+                    title: '作者',
+                    formatter: NickNameFormatter
+                },
+                {
+                    field: 'title',
+                    title: '标题',
+                    sortable: true
+                },
+                {
+                    field: 'subTitle',
+                    title: '副标题',
+                    sortable: true,
+                    visible: false
+                },
+                {
+                    field: 'addDate',
+                    title: '发布日期',
+                    sortable: true,
+                    formatter: addDateFormatter
+                },
+                {
+                    field: 'startDate',
+                    title: '开始时间',
+                    sortable: true,
+                    formatter: startDateFormatter
+                },
+                {
+                    field: 'endDate',
+                    title: '结束时间',
+                    sortable: true,
+                    formatter: endDateFormatter
+                },
+                {
+                    field: 'timeLimit',
+                    title: '时间限制',
+                    sortable: true
+                },
+                {
+                    field: 'type',
+                    title: '问卷类型',
+                    sortable: true,
+                    formatter: typeFormatter
+                },
+                {
+                    title: '操作',
+                    width: 120,
+                    align: 'center',
+                    valign: 'middle',
+                    formatter: actionFormatter
+                },],
+            onLoadSuccess: function () {
+
+                toastr.success("加载成功");
+            },
+            onLoadError: function () {
+                toastr.error("数据加载失败！");
+            }
+        });
+        function addDateFormatter(value, row, index) {
+            return new Date(row.addDate).toLocaleString()
+        }
+        function startDateFormatter(value, row, index) {
+            return new Date(row.startDate).toLocaleString()
+        }
+        function endDateFormatter(value, row, index) {
+            return new Date(row.endDate).toLocaleString()
+        }
+        function rowAttributes(row, index) {
+            return {
+                'data-toggle': 'popover',
+                'data-placement': 'bottom',
+                'data-trigger': 'hover',
+                'data-content': [
+                    "问卷描述：" + row.description
+                ].join(', ')
+            }
+        }
+        // function scoresFormatter(value, row, index) {
+        //     var result = ""
+        //     if (row.PaperID.Type == 1) {
+        //         result = row.Scores;
+        //     }
+        //     else {
+        //         result = "不支持"
+        //     }
+        //     return result;
+        // }
+        //操作栏的格式化
+        function actionFormatter(value, row, index) {
+            var result = "";
+            result += "<a href='/views/paper_watch.html?" + row.paperId + "&" + row.recordId + "' class='btn btn-xs green'  title='查看回答'><span class='glyphicon glyphicon-search'></span>查看回答</a>";
+
+            return result;
+        }
+        function NickNameFormatter(value, row, index) {
+            var result = '<img src="/static/img/' + row.imgName + '" class=" img-circle" alt="喵喵喵~" width="25px">' + row.nickName
+            return result;
+        }
+        function idformatter(value, row, index) {
+            var now = new Date();
+            var old = new Date(row.addDate)
+            //console.log(now);
+            //console.log(old);
+            if (now.getTime() - old.getTime() < 3 * 1000 * 60 * 60 * 24)
+                result = '<img src="/static/img/new.png" alt="new" width="35px">&nbsp;' + value;
+            else
+                result = value;
+            return result;
+        }
+
+        function typeFormatter(value, row, index) {
+            var result = "";
+            if (value == 0) {
+                result = "开放式问卷"
+            } else {
+                result = "带答案问卷"
+            }
+            return result;
+        }
+
+
+        $(function () {
+            $('#table').on('post-body.bs.table', function (e) {
+                $('[data-toggle="popover"]').popover()
+            })
+        })
+        function InfoViewById(id) {
+            data = $table.bootstrapTable('getRowByUniqueId', id);
+            console.info(data)
+            $('#md-title').html(data.title);
+            $('#md-subtitle').html(data.subTitle);
+            $('#md-author').html(data.nickName);
+            $('#md-startDate').html(data.startDate);
+            $('#md-endDate').html(data.endDate);
+            if (data.timeLimit > 0)
+                $('#md-timelimit').html(data.timeLimit + "分钟");
+            else
+                $('#md-timelimit').html("无限制");
+            $('#md-description').html(data.description);
+            $("#md-img").attr('src', '/paper/img/' + id + '?' + Math.random());
+            $("#md-authorImg").attr('src', '/headimg/' + data.authorId + '?' + Math.random());
+            $(".enterPaper").attr('href', '/paper/do/' + data.paperId);
+
+            $('#info').modal('show');
+        }
+    </script>
+</body>
+
+</html>

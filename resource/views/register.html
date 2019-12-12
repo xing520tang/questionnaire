@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="./favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/toastr/css/toastr.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrapvalidator/css/bootstrapValidator.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>用户注册</title>
+
+    <style>
+        .footer{
+            margin-bottom: 10px;
+            font-weight: bold;
+        }
+        footer ul{
+            text-align: center;
+        }
+        footer ul li{
+            display: inline;
+            font-size: 12px;
+            margin:0 5px;
+            list-style-type: none;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!--nav start-->
+    <nav class="navbar  navbar-inverse navbar-static-top ">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                        aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/views/index.html"><i>Questionnaire investigation</i></a>
+            </div>
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/paper">我要发布</a></li>
+                    <li><a href="/views/paper_list.html">问卷列表</a></li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right" id="landr">
+                    <li class="active" ><a href="/views/register.html">注册</a></li>
+                    <li><a href="/views/login.html">登录</a></li>
+                </ul>
+
+            </nav>
+        </div>
+    </nav>
+    <!--nav end-->
+
+
+    <div class="container" style="max-width: 500px">
+        <div class="panel panel-default">
+            <div class="panel-heading" style="text-align: center">
+                <h2 class="panel-title"><strong>注 册</strong></h2>
+            </div>
+            <div class="panel-body">
+                <form method="POST" action="/register" id="registerForm">
+                    <div class="form-group">
+                        <label>用户名</label>
+                        <input class="form-control" placeholder="请输入用户名" name="userName">
+                    </div>
+                    <div class="form-group">
+                        <label>昵称</label>
+                        <input class="form-control" placeholder="请输入昵称" name="nickName">
+                    </div>
+                    <div class="form-group">
+                        <label>密码</label>
+                        <input type="password" class="form-control" placeholder="请输入密码" name="pwd1">
+                    </div>
+                    <div class="form-group">
+                        <label>确认密码</label>
+                        <input type="password" class="form-control" placeholder="请再次输入密码" name="password">
+                    </div>
+                    <button type="submit" id="mySubmit" class="btn btn-primary">注 册</button>
+                    <button type="button" class="btn btn-default" style="margin-left: 15px" onclick="javascript:history.go(-1);">返 回</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- 脚注 -->
+    <nav class="navbar navbar-default navbar-fixed-bottom">
+
+        <div class="container" class="text-center">
+            <footer class="footer" style="margin-top: 10px;">
+                <ul>
+                    <li><a href='./tos'>服务条款</a></li> <span class="sep">|</span>
+                    <li><a href='/privacy'>隐私政策</a></li><span class="sep">|</span>
+                    <li><a href='https://blog.csdn.net/qq_41550842' target="_blank">Author：TinySpot</a></li><span class="sep">|</span>
+                    <li><a href='/faq'>FAQ</a></li><span class="sep">|</span>
+                    <li><a href="JavaScript:void(0);" data-toggle="tooltip" data-placement="bottom" title="QQ:1845790416" >联系我们</a></li>
+                </ul>
+                <div class="text-center">
+                    <small id="copyright">Copyright Since 2019 &copy;<a href="http://127.0.0.1:8080">TinySpot Inc.</a> All rights reserved.</small>
+                </div>
+            </footer>
+        </div>
+    </nav>
+    <!--注脚结束-->
+
+    <!--模态框-->
+    <div class="modal fade" id="tipModal" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalTitle">请稍等</h4>
+                </div>
+                <div class="modal-body" id="modalBody">
+                    <!-- 进度条 -->
+                    <div class="progress" id="modalProgress">
+                        <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 50%">
+                            <span class="sr-only">50% Complete</span>
+                        </div>
+                    </div>
+                    <!-- 具体内容 -->
+                    <div id="modalContent">
+                    </div>
+                </div>
+                <div class="modal-footer" id="modalFooter" style="display: none;">
+                    <button type="button" id="confirmbtn" class="btn btn-success">确 定</button>
+                    <button type="button" id="getOff" class="btn btn-info" data-dismiss="modal">关 闭</button>
+                </div>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+
+    <!-- jQuery -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/vendor/toastr/js/toastr.min.js"></script>
+    <script src="/static/vendor/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+
+    <script src="/static/js/register.js"></script>
+</body>
+
+</html>

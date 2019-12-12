@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/toastr/css/toastr.min.css" rel="stylesheet">
+    <link href="/static/vendor/bootstrapvalidator/css/bootstrapValidator.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <title>个人信息</title>
+</head>
+
+<body>
+    <!--nav start-->
+    <nav class="navbar  navbar-inverse navbar-static-top ">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                        aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/views/index.html"><i>Questionnaire investigation</i></a>
+            </div>
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+
+                <ul class="nav navbar-nav">
+                    <li><a href="/paper">我要发布</a></li>
+                    <li><a href="/views/paper_list.html">问卷列表</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right" id="il">
+                    <li style="display: none;" id="backManager"><a href="/#">后台管理</a></li>
+                    <li>
+                        <div class="dropdown">
+
+                            <button class="btn btn-link " href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="true">
+                                <img src="/static/img/akari.jpg" class="img-circle headimg" alt="xixixi~" style="width:35px;height: 35px">
+                                <span class="nick">nickname</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/views/member_info.html">个人中心</a></li>
+                                <li><a href="/views/member_publish.html">我的发布</a></li>
+                                <li><a href="/views/member_do.html">我的参与</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">退出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </nav>
+    <!--nav end-->
+
+
+    <div class="container">
+        <div class="row">
+
+            <div class="container">
+                <ul class="nav nav-pills ">
+                    <li role="presentation"  class="active" ><a href="#">我的信息</a></li>
+                    <li role="presentation"><a href="/views/member_publish.html">我的发布</a></li>
+                    <li role="presentation"><a href="/views/member_do.html">我的参与</a></li>
+                </ul>
+            </div>
+
+
+            <div class="col-md-9">
+
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        我的信息
+                    </div>
+                    <div class="panel-body " style="background-color:rgba(230, 219, 219, 0.521)">
+                        <img src="/static/img/akari.jpg" class="img-circle center-block img-thumbnail headimg"
+                            alt="喵喵喵～头像失踪鸟～" style="height:200px;width: 200px;">
+
+
+                        <h1 class="text-center nick" style="color:darkblue;">用户昵称</h1>
+                        <button class="btn btn-primary " data-toggle="modal" data-target="#changeHeadImg">修改头像</button>
+                        <button class="btn btn-primary " data-toggle="modal" data-target="#changePwd">修改密码</button>
+                        <a class="btn btn-primary " href="/logout">退出登录</a>
+
+
+                        <div class="panel panel-info">
+                            <!-- Default panel contents -->
+                            <div class="panel-heading">个人信息</div>
+                            <div class="panel-body">
+                                <table class="table table-striped ">
+                                    <tr>
+                                        <th class="text-right">用户名：</th>
+                                        <td class="text-left" id="userName">用户名</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">昵称：</th>
+                                        <td class="text-left"><label class="nick"
+                                                style="font-weight:normal; ">用户昵称</label>&nbsp;<a
+                                                class="btn-link" data-toggle="modal" data-target="#changeNick"
+                                                rel="noopener noreferrer" style="border:0;cursor:pointer">修改</a>
+                                        </td>
+
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">用户类型：</th>
+                                        <td class="text-left" id="userType">普通用户</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">注册日期：</th>
+                                        <td class="text-left" id = "registerTime">
+                                            0000-00-00 00:00:00</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">我发布的问卷数：</th>
+                                        <td class="text-left">0</td>
+                                    </tr>
+                                    <tr>
+                                        <th class="text-right">我回答过的问卷数：</th>
+                                        <td class="text-left">0</td>
+                                    </tr>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="changeHeadImg">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">请选择图片</h4>
+                </div>
+                <div class="modal-body">
+                    <input type="file" name="pic" id="uploadInp" class="btn">
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default back" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" id="submitHeadImg">提交更改</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <div class="modal fade" id="changePwd">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">修改密码</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="pwdForm" method="POST" action="" onkeypress="return event.keyCode != 13;">
+                        <div class="form-group">
+                            <label>原始密码</label>
+                            <input type="password" class="form-control" placeholder="请输入原始密码" name="oldPwd">
+                        </div>
+                        <div class="form-group">
+                            <label>新密码</label>
+                            <input type="password" class="form-control" placeholder="请输入新密码" name="newPwd1">
+                        </div>
+                        <div class="form-group">
+                            <label>确认密码</label>
+                            <input type="password" class="form-control" placeholder="请再次输入新密码" name="newPwd2">
+                        </div>
+                    </form>
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="submitPwd" class="btn btn-primary">提交更改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="changeNick">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">修改昵称</h4>
+                </div>
+                <div class="modal-body">
+                    <form id="nickForm" method="POST" action="" onkeypress="return event.keyCode != 13;">
+                        <div class="form-group">
+                            <label>新昵称</label>
+                            <input class="form-control" placeholder="请输入新昵称" name="newNick">
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                    <button type="button" id="submitNick" class="btn btn-primary">提交更改</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- footer -->
+    <!-- jQuery -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/vendor/toastr/js/toastr.min.js"></script>
+    <script src="/static/vendor/bootstrapvalidator/js/bootstrapValidator.min.js"></script>
+    <script src="/static/js/member_info.js"></script>
+</body>
+
+</html>

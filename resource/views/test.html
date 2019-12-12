@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <form action="/test" method="post">
+        name:
+        <input type="text" name="name">
+        gender:
+        <input type="text" name="gender">
+        age:
+        <input type="age" name="age">
+        name:
+        <input type="text" name="name">
+        gender:
+        <input type="text" name="gender">
+        age:
+        <input type="age" name="age">
+        <input type="submit" value="提交">
+    </form>
+    <!-- jQuery -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+<script>
+    $(function () {
+        $.ajax({
+            type:"post",
+            url: '/test',
+            contentType:"application/json; charset=utf-8",
+            dataType:"json",
+            data: JSON.stringify({test:[{name:'adjf',gender:'男',age:20},{name:'haha',gender:'女',age:30}]}) + "&" + JSON.stringify({users:[{id:40,userName:"tom"},{id:30,userName:"Jerry"}]}),
+            success:function(data){
+                console.log(data);
+            }
+        })
+    })
+</script>
+</body>
+</html>

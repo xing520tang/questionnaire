@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="icon" href="favicon.ico">
+
+    <!-- Bootstrap CSS -->
+    <link href="/static/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="/static/vendor/toastr/css/toastr.min.css" rel="stylesheet">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.3/html5shiv.js"></script>
+    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+    <link rel="stylesheet" href="/static/vendor/bootstrap-table/css/bootstrap-table.min.css">
+    <link rel="stylesheet" href="/static/vendor/bootstrap-datetimepicker/css/bootstrap-datetimepicker.min.css">
+
+    <title>questionnaire</title>
+</head>
+
+<body>
+
+    <!--nav start-->
+    <nav class="navbar  navbar-inverse navbar-static-top ">
+        <div class="container">
+            <div class="navbar-header">
+                <button class="navbar-toggle collapsed" type="button" data-toggle="collapse" data-target="#bs-navbar"
+                        aria-controls="bs-navbar" aria-expanded="false">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="/views/index.html"><i>Questionnaire investigation</i></a>
+            </div>
+            <nav id="bs-navbar" class="navbar-collapse collapse" aria-expanded="false" style="height: 1px;">
+
+                <ul class="nav navbar-nav">
+                    <li class="active"><a href="/paper">我要发布</a></li>
+                    <li><a href="/views/paper_list.html">问卷列表</a></li>
+                </ul>
+
+                <ul class="nav navbar-nav navbar-right" id="il" style="display: none">
+                    <li><a href="/#" style="display: none" id="backManager">后台管理</a></li>
+                    <li>
+                        <div class="dropdown">
+
+                            <button class="btn btn-link " href="#" type="button" id="dropdownMenu1" data-toggle="dropdown"
+                                    aria-haspopup="true" aria-expanded="true">
+                                <img src="/static/img/akari.jpg" class="img-circle headimg" alt="xixixi~" width="35px">
+                                <span class="nick">nickname</span>
+                                <span class="caret"></span>
+                            </button>
+                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                <li><a href="/views/member_info.html">个人中心</a></li>
+                                <li><a href="/views/member_publish.html">我的发布</a></li>
+                                <li><a href="/views/member_do.html">我的参与</a></li>
+                                <li role="separator" class="divider"></li>
+                                <li><a href="/logout">退出</a></li>
+                            </ul>
+                        </div>
+                    </li>
+                </ul>
+
+            </nav>
+        </div>
+    </nav>
+    <!--nav end-->
+
+    <div class="container">
+
+        <div class="page-header">
+            <h1>发布问卷</h1>
+            <h6 class="text-muted">定制您自己的问卷～</h6>
+        </div>
+    </div>
+
+
+    <div class="container">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">问卷信息</h3>
+            </div>
+            <div class="panel-body">
+                <!--表单开始-->
+                <form id="papers">
+                    <div class="form-group">
+                        <label class="col-md-1">问卷标题</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="title" placeholder="请输入标题">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1">副标题</label>
+                        <div class="col-md-3">
+                            <input type="text" class="form-control" name="subTitle" placeholder="请输入副标题">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2"> 问卷类型</label>
+                        <div class="radio col-md-3">
+                            <label>
+                                <input type="radio" name="type" id="paper-type-zero" value="0" checked
+                                    onchange="j_paper_type()">
+                                开放式问卷
+                            </label>
+                            <label>
+                                <input type="radio" name="type" id="paper-type-one" value="1" onchange="j_paper_type()">
+                                带答案问卷
+                            </label>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">问卷描述</label>
+                        <textarea class="form-control" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-1">开放日期</label>
+                        <div class="input-group date form_datetime col-md-3" data-date-format="dd MM yyyy - HH:ii:ss"
+                            data-link-field="dtp_input1">
+                            <input class="form-control" size="16" type="text" name="startDate" value="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                        <input type="hidden" id="dtp_input1" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label col-md-1">结束日期</label>
+                        <div class="input-group date form_datetime col-md-3" data-date-format="dd MM yyyy - HH:ii:ss"
+                            data-link-field="dtp_input2">
+                            <input class="form-control" size="16" type="text" name="endDate" value="" readonly>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-remove"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-th"></span></span>
+                        </div>
+                        <input type="hidden" id="dtp_input2" value="" />
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-1">时间限制</label>
+                        <div class="input-group col-md-3 jcounter">
+                            <input type="text" class="input-counter form-control " data-min="1" data-max="3600"
+                                data-default="30" name="timeLimit">
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-minus btn-subtract"
+                                    style="cursor:pointer"></span></span>
+                            <span class="input-group-addon"><span class="glyphicon glyphicon-plus btn-add"
+                                    style="cursor:pointer"></span></span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-2">备注</label>
+                        <textarea class="form-control" rows="3" name="remark"></textarea>
+                    </div>
+                    <!--<div>-->
+                        <!--<label class="col-md-1">封面图片</label>-->
+                        <!--<div class=" col-md-3"><input type="file" id="paperImg" name="pic"></div>-->
+                    <!--</div>-->
+                </form>
+                <!--表单结束-->
+            </div>
+        </div>
+    </div>
+
+    <div class="container ques-box">
+        <div class="panel panel-default ques-body">
+            <div class="panel-body">
+                <!--表单开始-->
+                <form class="questions">
+                    <div class="form-group form-inline ">
+                        <label>题号</label>
+                        <input type="number" class="form-control ques-no" name="no" value="1">
+                    </div>
+                    <div class="form-group form-inline">
+                        <label>题型</label>
+                        <select class="form-control ques-type" name="type" onchange="j_ques_type(this)">
+                            <option value="0" selected="selected">单选</option>
+                            <option value="1">多选</option>
+                            <option value="2">简答</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>题目描述</label>
+                        <textarea class="form-control ques-description" name="description" rows="3"></textarea>
+                    </div>
+                    <div class="form-group ques-option">
+                        <label>选项</label>
+                        <div class="radio">
+                            <input type="hidden" class="ques-option-num" name="optionsNum" value="1">
+                            <div class="form-inline pp">
+                                <a>1</a>
+                                <label class="ques-type-label"><input type="radio" class="ques-type-input"
+                                        name="StandardNo" value="1">(是否为答案？)</label>
+                                <input type="text" class="form-control op" name="optionsInfo">
+                                <button type="button" class='btn addp '>+</button>
+                                <button type="button" class='btn delp'>-</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label>备注</label>
+                        <textarea class="form-control ques-remark" name="remark" rows="3"></textarea>
+                    </div>
+
+                    <div class="form-group stan-scores">
+                        <label>分值</label>
+                        <input type="number" class="form-control" name="scores" value="1">
+                    </div>
+                    <div class="form-group stan-text">
+                        <label>参考答案</label>
+                        <textarea class="form-control" name="standText" rows="3"></textarea>
+                    </div>
+                </form>
+                <!--表单结束-->
+            </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-default ques-add">增加</button>
+                <button type="button" class="btn btn-danger ques-del">删除</button>
+            </div>
+        </div>
+
+        <a class="btn btn-primary" data-toggle="modal" href='#modal-submit'>发布问卷</a>
+        <h5 class="page-header"></h5>
+    </div>
+
+    <div class="modal fade" id="modal-submit">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">确认提交</h4>
+                </div>
+                <div class="modal-body">
+                    问卷已准备就绪，是否提交？
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">我再想想</button>
+                    <button type="button" class="btn btn-primary" id="saveBtn">确认提交</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- footer -->
+    <!-- jQuery -->
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <!-- Bootstrap JavaScript -->
+    <script src="/static/vendor/bootstrap/js/bootstrap.min.js"></script>
+
+    <script src="/static/vendor/toastr/js/toastr.min.js"></script>
+    <script src="/static/vendor/bootstrap-table/js/bootstrap-table.min.js"></script>
+    <script src="/static/vendor/bootstrap-datetimepicker/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="/static/vendor/bootstrap-datetimepicker/js/locales/bootstrap-datetimepicker.zh-CN.js"></script>
+    <script src="/static/vendor/bootstrap-table/js/locale/bootstrap-table-zh-CN.min.js"></script>
+    <script src="/static/vendor/bootstrap-table/js/extensions/mobile/bootstrap-table-mobile.min.js"></script>
+    <script src="/static/vendor/jquery-input-counter/js/jquery.input-counter.min.js"></script>
+    <script src="//cdn.bootcss.com/eruda/1.5.2/eruda.min.js"></script>
+    <script>eruda.init();</script>
+
+    <script src="/static/js/paper_new.js"></script>
+
+</body>
+
+</html>
