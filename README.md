@@ -95,22 +95,18 @@
    
    ```properties
    #服务端设置
-server.port=请求端口 （这个端口要与nginx配置文件中反向代理配置的端口保持一致）
+	server.port=请求端口（这个端口要与nginx配置文件中反向代理配置的端口保持一致）
    #图片文件夹路径
-path.image.dir=图片保存路径 （该路径需与resource中的
-   
+	path.image.dir=图片保存路径（该路径需与resource中的
    #数据源配置
    spring.datasource.username=数据库用户名
    spring.datasource.password=数据库密码
    spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
    spring.datasource.url=jdbc:mysql://localhost:3306/question?serverTimezone=GMT%2B8
-   
    #上传文件大小限制
    spring.servlet.multipart.max-file-size=2MB
-   
    #告诉springmvc封装日期类型的数据使用如下格式
    spring.mvc.date-format=yyyy-MM-dd HH:mm:ss
-   
    #日志配置
    #com.tinyspot包下的日志级别为debug
    logging.level.com.tinyspot=debug  
