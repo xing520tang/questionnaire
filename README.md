@@ -116,7 +116,6 @@ path.image.dir=图片保存路径 （该路径需与resource中的
    logging.level.com.tinyspot=debug  
    logging.file=日志存储文件位置，可以不设置
    #logging.pattern.file=%d{yyyy-MM-dd HH:mm:ss} [%-5level] %logger{50}==> %msg%n
-   
    ```
    
    * 导入数据库
@@ -130,7 +129,5 @@ path.image.dir=图片保存路径 （该路径需与resource中的
    ```properties
    数据库的users表需要一个默认用户，id为0号的匿名用户
    ```
-   
-   
    
    * 未完待续。。。
