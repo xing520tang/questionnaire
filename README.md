@@ -50,7 +50,7 @@
 ### 如何使用
 
 1. 部署运行环境
-   * 安装反向代理服务软件Nginx，windows或linux版本均可
+   * 安装反向代理服务软件Nginx1.14.2，windows或linux版本均可。可参看博文[Nginx简单安装与配置](https://blog.csdn.net/qq_41550842/article/details/103532550)，也可自行百度
    * 静态html，js，图片等在上面的resource文件夹内，将这些放入服务器中
    * Java版本1.8
    * mysql5.5
